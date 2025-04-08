@@ -1,0 +1,9 @@
+openapi: 3.0.1
+info:
+  title: FoodyHeaven API
+  version: 0.1.0
+  description: Smart Community Food Hub backend API
+servers:
+  - url: http://localhost:8080/api
+paths: {}
+components: {}
