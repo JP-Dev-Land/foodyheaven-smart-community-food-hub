@@ -2,9 +2,11 @@ package com.jpdevland.foodyheaven.backend.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder; // Add Builder
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet; // Use HashSet for initialization
 import java.util.Set;
 
 @Entity
@@ -12,28 +14,29 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder // Add Builder
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(unique = true, nullable = false)
-    private String username;
+    private String username; // email
+
     @Column(nullable = false)
     private String password;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id")) // join table
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
+
+    @Builder.Default // Default to enabled
+    @Column(nullable = false)
+    private boolean enabled = true; // For soft deleting/disabling users
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/food-items")
 @RequiredArgsConstructor
-// @CrossOrigin(origins = "http://localhost:5173") // Configure globally if needed
+// @CrossOrigin(origins = "http://localhost:5173") // Configured globally
 public class FoodItemController {
 
     private final FoodItemService foodItemService;
@@ -40,11 +40,11 @@ public class FoodItemController {
 
     // POST (Create - Requires Authentication, e.g., any logged-in user or specific role)
     @PostMapping
-    @PreAuthorize("isAuthenticated()") // Example: Any logged-in user can create. Change role if needed: "hasRole('COOK')"
+    @PreAuthorize("isAuthenticated()") // Example: Any logged-in user can create. Change role if needed: "hasRole('ROLE_COOK')"
     public ResponseEntity<FoodItemDTO> createFoodItem(
             @Valid @RequestBody CreateFoodItemRequest request, // Add @Valid for validation
             @AuthenticationPrincipal UserDetailsImpl currentUser) { // Get authenticated user details
-
+        System.out.println("Request came : " + request);
         if (currentUser == null) {
             // Should ideally be handled by Spring Security filters, but as a fallback:
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

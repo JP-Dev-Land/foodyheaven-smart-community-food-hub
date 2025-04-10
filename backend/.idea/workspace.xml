@@ -69,6 +69,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.jpdevland.foodyheaven.backend.exception" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="FoodyHeaven" />
@@ -182,6 +187,7 @@
       <workItem from="1744255212526" duration="3311000" />
       <workItem from="1744263371508" duration="4000" />
       <workItem from="1744276572099" duration="5392000" />
+      <workItem from="1744286835800" duration="13189000" />
     </task>
     <servers />
   </component>

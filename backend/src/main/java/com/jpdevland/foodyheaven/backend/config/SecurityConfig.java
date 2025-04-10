@@ -40,28 +40,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // 1. Enable CORS support (uses our CorsConfigurationSource bean)
-                .cors(Customizer.withDefaults())
-                // 2. Disable CSRF since we’re stateless
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
-                // 3. Stateless session management
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 4. Authorization rules
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/users/me").authenticated()
-                        .requestMatchers("/api/protected/**").authenticated()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers("/api/food-items/**").authenticated()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/me/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                // 5. Use our UserDetailsService
                 .userDetailsService(userDetailsService)
-                // 6. Add JWT filter before UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
