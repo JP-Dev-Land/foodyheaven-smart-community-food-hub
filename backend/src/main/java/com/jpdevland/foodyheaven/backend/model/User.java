@@ -16,9 +16,24 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false) private String name;
-    @Column(unique = true, nullable = false) private String username;
-    @Column(nullable = false) private String password;
+    @Column(nullable = false)
+    private String name;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;}
+    private Set<Role> roles;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+}

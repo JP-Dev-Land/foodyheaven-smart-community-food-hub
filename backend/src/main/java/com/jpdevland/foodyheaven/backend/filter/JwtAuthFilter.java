@@ -1,6 +1,6 @@
 package com.jpdevland.foodyheaven.backend.filter;
 
-import com.jpdevland.foodyheaven.backend.service.UserDetailsServiceImpl;
+import com.jpdevland.foodyheaven.backend.service.impl.UserDetailsServiceImpl;
 import com.jpdevland.foodyheaven.backend.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
