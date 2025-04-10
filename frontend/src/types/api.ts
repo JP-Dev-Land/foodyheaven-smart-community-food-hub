@@ -29,3 +29,43 @@ export interface AuthRequest {
       message: string;
       // TODO: Add other potential error fields: timestamp, details, status, etc.
   }
+
+  export interface FoodItem {
+    id: number;
+    cookId: number;
+    cookName: string;
+    name: string;
+    description: string;
+    price: number;
+    imageUrl: string | null;
+    tags: string[];
+    available: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+  
+  // Matches backend CreateFoodItemRequest.java
+  export interface CreateFoodItemRequest {
+    name: string;
+    description?: string; // optional
+    price: number;
+    imageUrl?: string;
+    tags?: string[];
+    available?: boolean; // Usually defaulted, but allow setting
+  }
+  
+  // Matches backend UpdateFoodItemRequest.java
+  export interface UpdateFoodItemRequest {
+    name: string;
+    description?: string;
+    price: number;
+    imageUrl?: string;
+    tags?: string[];
+    available: boolean; // required on update
+  }
+  
+  // Specific type for update mutation payload
+  export interface UpdateFoodItemPayload {
+      id: number | string;
+      data: UpdateFoodItemRequest;
+  }

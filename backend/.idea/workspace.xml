@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed23612f-5587-413c-81ca-db32c20233cc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/controller/FoodItemController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/dto/CreateFoodItemRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/dto/FoodItemDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/dto/UpdateFoodItemRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/exception/ResourceNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/exception/UnauthorizedAccessException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/model/FoodItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/repo/FoodItemRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/service/FoodItemService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/service/impl/FoodItemServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/service/impl/UserDetailsImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migrations/V3__Create_food_items_table.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/filter/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/filter/JwtAuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/service/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpdevland/foodyheaven/backend/service/impl/UserDetailsServiceImpl.java" afterDir="false" />
-    </list>
+    <list default="true" id="ed23612f-5587-413c-81ca-db32c20233cc" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -197,7 +181,7 @@
       <workItem from="1744213256120" duration="7090000" />
       <workItem from="1744255212526" duration="3311000" />
       <workItem from="1744263371508" duration="4000" />
-      <workItem from="1744276572099" duration="2513000" />
+      <workItem from="1744276572099" duration="5392000" />
     </task>
     <servers />
   </component>
