@@ -1,8 +1,6 @@
 package com.jpdevland.foodyheaven.backend.controller;
 
-import com.jpdevland.foodyheaven.backend.dto.UpdateUserRequestDTO;
-import com.jpdevland.foodyheaven.backend.dto.UserDetailDTO;
-import com.jpdevland.foodyheaven.backend.dto.UserSummaryDTO;
+import com.jpdevland.foodyheaven.backend.dto.*;
 import com.jpdevland.foodyheaven.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +31,14 @@ public class AdminController {
     public ResponseEntity<UserDetailDTO> getUserById(@PathVariable Long id) {
         UserDetailDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
+    }
+
+    // POST /api/admin/users - Create a new user
+    @PostMapping
+    public ResponseEntity<UserDetailDTO> createUser(@Valid @RequestBody CreateUserRequestDTO request) {
+        UserDetailDTO createdUser = userService.createUser(request);
+        // Return 201 Created status with the created user details
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     // PUT /api/admin/users/{id} - Update user details (including roles)

@@ -143,7 +143,7 @@ const FoodDetailPage: React.FC = () => {
                  size="lg"
                  className="w-full md:w-auto"
                  disabled={!item.available || isDeleting} // Also disable while deleting
-                 // onClick={() => handleAddToCart(item.id)} // TODO: Implement cart logic
+                //  onClick={() => handleAddToCart(item.id)} // TODO: Implement cart logic
              >
                  {item.available ? 'Add to Cart' : 'Currently Unavailable'}
              </Button>

@@ -12,7 +12,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
          <div className="text-center mb-8">
              <h1 className="text-4xl font-bold text-indigo-600 pr-24">FoodyHeaven</h1>
          </div>
-      <Card className="w-full max-w-md"> {/* Use Card for consistent styling */}
+      <Card className="w-full max-w-md">
         {children}
       </Card>
     </div>
