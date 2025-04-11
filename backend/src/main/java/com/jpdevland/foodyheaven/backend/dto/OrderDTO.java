@@ -1,5 +1,6 @@
 package com.jpdevland.foodyheaven.backend.dto;
 
+import com.jpdevland.foodyheaven.backend.model.Coordinates;
 import com.jpdevland.foodyheaven.backend.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +28,6 @@ public class OrderDTO {
     private Instant createdAt;
     private Instant updatedAt;
     private List<OrderItemDTO> items;
+    private Coordinates pickupLocation;
+    private Coordinates deliveryLocation;
 }

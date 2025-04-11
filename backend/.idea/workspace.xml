@@ -4,7 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed23612f-5587-413c-81ca-db32c20233cc" name="Changes" comment="" />
+    <list default="true" id="ed23612f-5587-413c-81ca-db32c20233cc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/UserCreateForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/UserCreateForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/UserEditForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/UserEditForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/UserTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/UserTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/layout/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/layout/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ui/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ui/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/AdminUserEditPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/AdminUserEditPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/AdminUserListPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/AdminUserListPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/CartPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/CartPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/CheckoutPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/CookDashboardPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/CookDashboardPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/DeliveryDashboardPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/DeliveryDashboardPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/FoodDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/FoodDetailPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/OrderHistoryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/OrderHistoryPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/routes/AppRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/routes/AppRouter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/services/orderService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/orderService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/services/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/userService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/types/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/types/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/vite.config.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -187,7 +210,9 @@
       <workItem from="1744255212526" duration="3311000" />
       <workItem from="1744263371508" duration="4000" />
       <workItem from="1744276572099" duration="5392000" />
-      <workItem from="1744286835800" duration="21029000" />
+      <workItem from="1744286835800" duration="22736000" />
+      <workItem from="1744352250051" duration="11391000" />
+      <workItem from="1744376818946" duration="10165000" />
     </task>
     <servers />
   </component>

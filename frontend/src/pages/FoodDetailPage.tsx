@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useGetFoodItemById, useDeleteFoodItem } from '../services/foodItemService';
 import { useAuth } from '../hooks/useAuth';
+import { useCart } from '../hooks/useCart';
 import { ApiError } from '../types/api';
 import Spinner from '../components/ui/Spinner';
 import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
 import { formatDate, formatPrice } from '../utils/formatters';
 
 const FoodDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { addItem } = useCart();
+  const [quantity, setQuantity] = useState(1);
 
   const {
     data: item,
@@ -40,6 +44,20 @@ const FoodDetailPage: React.FC = () => {
         // onError: Error is handled via the deleteError state and displayed below
       });
     }
+  };
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value) && value > 0) {
+      setQuantity(value);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (!item) return;
+    addItem(item, quantity);
+    // Optional: Show success message or feedback
+    alert(`Added ${quantity} ${quantity === 1 ? 'item' : 'items'} to cart`);
   };
 
   // Loading State
@@ -136,17 +154,27 @@ const FoodDetailPage: React.FC = () => {
             )}
           </div>
 
-          {/* Add to Cart Button (Placeholder) */}
+          {/* Add to Cart Section */}
           <div className="mb-6">
-             <Button
-                 variant="primary"
-                 size="lg"
-                 className="w-full md:w-auto"
-                 disabled={!item.available || isDeleting} // Also disable while deleting
-                //  onClick={() => handleAddToCart(item.id)} // TODO: Implement cart logic
-             >
-                 {item.available ? 'Add to Cart' : 'Currently Unavailable'}
-             </Button>
+            <div className="flex items-center gap-4 mb-4">
+              <Input
+                type="number"
+                value={quantity}
+                onChange={handleQuantityChange}
+                min={1}
+                className="w-20"
+                disabled={!item.available || isDeleting}
+              />
+              <Button
+                variant="primary"
+                size="lg"
+                className="w-full md:w-auto"
+                disabled={!item.available || isDeleting}
+                onClick={handleAddToCart}
+              >
+                {item.available ? 'Add to Cart' : 'Currently Unavailable'}
+              </Button>
+            </div>
           </div>
 
           {/* Timestamps */}

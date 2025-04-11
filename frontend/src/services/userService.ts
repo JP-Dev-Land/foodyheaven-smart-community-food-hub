@@ -7,7 +7,8 @@ import {
     UserProfile,
     UpdateProfileRequest,
     ApiError,
-    CreateUserRequest
+    CreateUserRequest,
+    UpdateAvailabilityRequestDTO
 } from '../types/api';
 
 // Query Key Factory
@@ -56,6 +57,15 @@ const fetchUserProfile = async (): Promise<UserProfile> => {
 const updateUserProfile = async (request: UpdateProfileRequest): Promise<UserProfile> => {
     const { data } = await api.put<UserProfile>('/users/me', request);
     return data;
+};
+
+const updateMyAvailability = async (request: UpdateAvailabilityRequestDTO): Promise<void> => {
+    try {
+        await api.put<void>('/users/me/availability', request);
+    } catch (error) {
+        console.error('Error in updateMyAvailability:', error);
+        throw error;
+    }
 };
 
 
@@ -162,5 +172,30 @@ export const useUpdateUserProfile = () => {
              console.error('Error updating profile:', error.message);
              // TODO: Consider showing an error toast/notification
         }
+    });
+};
+
+export const useUpdateMyAvailability = () => {
+    const queryClient = useQueryClient();
+    return useMutation<void, ApiError, UpdateAvailabilityRequestDTO>({
+        mutationFn: async (request) => {
+            try {
+                console.log('Sending availability update request:', request);
+                await api.put<void>('/users/me/availability', request);
+            } catch (error) {
+                console.error('Error in updateMyAvailability:', error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            console.log('Availability updated successfully, invalidating profile cache');
+            queryClient.invalidateQueries({ queryKey: userKeys.profile() });
+        },
+        onError: (error) => {
+            console.error('Error updating availability:', error);
+            if (error.message.includes('403')) {
+                console.error('Forbidden - User might not have ROLE_DELIVERY_AGENT');
+            }
+        },
     });
 };

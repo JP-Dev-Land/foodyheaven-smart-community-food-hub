@@ -6,6 +6,10 @@ import com.jpdevland.foodyheaven.backend.dto.RegisterRequest;
 import com.jpdevland.foodyheaven.backend.model.Role;
 import com.jpdevland.foodyheaven.backend.repo.UserRepository;
 import com.jpdevland.foodyheaven.backend.utils.JwtUtil;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,15 +41,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthResponse(token));
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
+        try {
+            Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String token = jwtUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthResponse(token));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
         if(userRepository.findByUsername(request.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Username is already taken");
         }
@@ -55,7 +65,7 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(Role.ROLE_USER));
         user.setName(request.getName());
-        System.out.println("User : " + user);
+        user.setEnabled(true);
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully");
     }

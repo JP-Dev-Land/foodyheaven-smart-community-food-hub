@@ -26,6 +26,6 @@ public class UpdateFoodItemRequest {
 
     private List<@NotBlank @Size(max=50) String> tags;
 
-    @NotNull // Availability must be specified on update
+    @NotNull
     private Boolean available;
 }

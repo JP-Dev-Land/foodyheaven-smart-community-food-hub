@@ -17,12 +17,12 @@ public class CreateUserRequestDTO {
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
-    // TODO: To be added more password complexity validation if needed (e.g., @Pattern)
+    // TODO: Add more password complexity validation if needed (e.g., @Pattern)
     private String password;
 
     @NotEmpty(message = "At least one role must be selected")
     private Set<Role> roles;
 
     @NotNull(message = "Enabled status must be specified (true/false)")
-    private Boolean enabled = true;
+    private Boolean enabled = true; // Default to true
 }

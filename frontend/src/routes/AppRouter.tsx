@@ -8,6 +8,7 @@ import FoodListPage from '../pages/FoodListPage';
 import FoodDetailPage from '../pages/FoodDetailPage';
 import CreateFoodItemPage from '../pages/CreateFoodItemPage';
 import EditFoodItemPage from '../pages/EditFoodItemPage';
+import AdminDashboardPage from '../pages/AdminDashboardPage';
 
 import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from '../hooks/useAuth';
@@ -25,6 +26,7 @@ import CookRoute from './CookRoute';
 import DeliveryAgentRoute from './DeliveryAgentRoute';
 import AdminCreateUserPage from '../pages/AdminCreateUserPage';
 import MainLayout from './MainLayout';
+import OrderDetailPage from '../pages/OrderDetailPage';
 
 const AppRouter: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -48,6 +50,8 @@ const AppRouter: React.FC = () => {
         path="/register"
         element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/" replace />}
       />
+
+      {/* Routes within MainLayout (Header/Footer) */}
       <Route element={<MainLayout />}>
         <Route path="/food" element={<FoodListPage />} />
         <Route path="/food/:id" element={<FoodDetailPage />} />
@@ -60,32 +64,33 @@ const AppRouter: React.FC = () => {
           <Route path="/food/:id/edit" element={<EditFoodItemPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/my-orders" element={<OrderHistoryPage />} />
-          {/* <Route path="/orders/:id" element={<OrderDetailPage />} /> */}
+          <Route path="/order-history" element={<OrderHistoryPage />} />
+          <Route path="/order-details/:id" element={<OrderDetailPage />} />
           {/* <Route path="/order-confirmation/:id" element={<OrderConfirmationPage />} /> */}
-          {/* Add other protected routes: profile, cook dashboard, etc. */}
 
           {/* Cook Routes */}
           <Route path="/cook" element={<CookRoute />}>
             <Route path="dashboard" element={<CookDashboardPage />} />
-            {/* Add other cook routes: /cook/orders, /cook/items */}
+            {/* Add other cook routes */}
           </Route>
 
           {/* Delivery Agent Routes */}
           <Route path="/delivery" element={<DeliveryAgentRoute />}>
             <Route path="dashboard" element={<DeliveryDashboardPage />} />
-            {/* Add other delivery routes: /delivery/available, /delivery/current */}
+            {/* Add other delivery routes */}
           </Route>
 
           {/* Admin Routes */}
-          <Route path="/admin" element={<AdminRoute />}> {/* Wrapper for Admin routes */}
+          <Route path="/admin" element={<AdminRoute />}>
+            <Route index element={<AdminDashboardPage />} /> {/* Default admin page */}
+            <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="users" element={<AdminUserListPage />} />
+            <Route path="users/new" element={<AdminCreateUserPage />} /> {/* Added Create User Route */}
             <Route path="users/:id/edit" element={<AdminUserEditPage />} />
-            <Route path="/admin/users/new" element={<AdminCreateUserPage />} />
-            {/* Add other admin routes: /admin/orders, /admin/dashboard etc. */}
+            {/* Add other admin routes */}
           </Route>
         </Route>
-      </Route>
+      </Route> {/* End of MainLayout routes */}
 
       {/* Catch-all Route */}
       <Route

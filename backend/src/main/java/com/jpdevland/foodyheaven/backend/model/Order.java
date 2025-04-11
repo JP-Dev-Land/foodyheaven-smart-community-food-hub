@@ -44,6 +44,26 @@ public class Order {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude", column = @Column(name = "pickup_latitude")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "pickup_longitude")),
+        @AttributeOverride(name = "street", column = @Column(name = "pickup_street")),
+        @AttributeOverride(name = "city", column = @Column(name = "pickup_city")),
+        @AttributeOverride(name = "postalCode", column = @Column(name = "pickup_postal_code"))
+    })
+    private Coordinates pickupLocation;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude", column = @Column(name = "delivery_latitude")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "delivery_longitude")),
+        @AttributeOverride(name = "street", column = @Column(name = "delivery_street")),
+        @AttributeOverride(name = "city", column = @Column(name = "delivery_city")),
+        @AttributeOverride(name = "postalCode", column = @Column(name = "delivery_postal_code"))
+    })
+    private Coordinates deliveryLocation;
+
     @CreationTimestamp
     private Instant createdAt;
 

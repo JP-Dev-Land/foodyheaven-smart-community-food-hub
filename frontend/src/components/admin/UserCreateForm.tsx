@@ -153,6 +153,7 @@ const UserCreateForm: React.FC<UserCreateFormProps> = ({
           checked={enabled}
           onChange={(e) => setEnabled(e.target.checked)}
           disabled={isSubmitting}
+          wrapperClassName="my-4" // Add margin
       />
 
       <Button

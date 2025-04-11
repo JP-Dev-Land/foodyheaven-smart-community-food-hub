@@ -67,7 +67,7 @@ const HomePage: React.FC = () => {
                                 Browse Full Menu <ArrowRightIcon className="h-5 w-5 ml-2" />
                             </Button>
                         </Link>
-                         <Link to="/my-orders">
+                         <Link to="/order-history">
                             <Button variant="secondary" size="lg">View My Orders</Button>
                         </Link>
                     </div>

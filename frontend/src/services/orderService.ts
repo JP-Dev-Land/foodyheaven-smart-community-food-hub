@@ -1,11 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from './api';
+import axios from 'axios';
 import {
     OrderDTO,
     PlaceOrderRequestDTO,
     UpdateOrderStatusRequestDTO,
-    ApiError
+    ApiError,
+    AssignAgentRequestDTO
 } from '../types/api';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Query Key Factory
 const orderKeys = {
@@ -33,12 +37,44 @@ const fetchOrderById = async (id: number | string): Promise<OrderDTO> => {
     return data;
 };
 
-// TODO: to be added fetches for cook, delivery agent, available orders similarly...
+const fetchOrdersAvailableForDelivery = async (): Promise<OrderDTO[]> => {
+    const { data } = await api.get<OrderDTO[]>('/orders/available-for-delivery');
+    return data;
+};
+
+const fetchMyAssignedOrders = async (): Promise<OrderDTO[]> => {
+    const { data } = await api.get<OrderDTO[]>('/orders/delivery');
+    return data;
+};
+
+const assignDeliveryAgent = async (params: { orderId: number | string; request: AssignAgentRequestDTO }): Promise<OrderDTO> => {
+    const { orderId, request } = params;
+    const { data } = await api.post<OrderDTO>(`/orders/${orderId}/assign-agent`, request);
+    return data;
+};
 
 const updateOrderStatus = async (params: { id: number | string; request: UpdateOrderStatusRequestDTO }): Promise<OrderDTO> => {
     const { id, request } = params;
     const { data } = await api.put<OrderDTO>(`/orders/${id}/status`, request);
     return data;
+};
+
+const fetchCookOrders = async (): Promise<OrderDTO[]> => {
+    // Assumes the backend endpoint /api/orders/cook exists and returns orders for the logged-in cook
+    const { data } = await api.get<OrderDTO[]>('/orders/cook');
+    return data;
+};
+
+export const getOptimalRoute = async (origin: string, destination: string) => {
+    try {
+        const response = await api.get(`${API_BASE_URL}/orders/route`, {
+            params: { origin, destination },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch optimal route:', error);
+        throw error;
+    }
 };
 
 // Mutation Hooks
@@ -59,6 +95,49 @@ export const usePlaceOrder = () => {
     });
 };
 
+export const useUpdateOrderStatus = () => {
+    const queryClient = useQueryClient();
+    return useMutation<OrderDTO, ApiError, { id: number | string; request: UpdateOrderStatusRequestDTO }>({
+        mutationFn: updateOrderStatus,
+        onSuccess: (updatedOrder, variables) => {
+            // Invalidate lists and details
+            queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.id) });
+            // Update cache directly
+            queryClient.setQueryData(orderKeys.detail(variables.id), updatedOrder);
+            console.log('Order status updated successfully', updatedOrder);
+            // TODO: Success notification
+        },
+        onError: (error, variables) => {
+            console.error(`Error updating status for order ${variables.id}:`, error.message);
+            // TODO: Error notification
+        },
+    });
+};
+
+export const useAssignDeliveryAgent = () => {
+    const queryClient = useQueryClient();
+    return useMutation<OrderDTO, ApiError, { orderId: number | string; request: AssignAgentRequestDTO }>({
+        mutationFn: assignDeliveryAgent,
+        onSuccess: (updatedOrder) => {
+            // Invalidate relevant order lists and details
+            queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+            // Specifically invalidate lists that might show available orders or agent-specific lists
+            queryClient.invalidateQueries({ queryKey: orderKeys.list('available') });
+            // If you have agent-specific lists:
+            // queryClient.invalidateQueries({ queryKey: orderKeys.list('delivery', updatedOrder.deliveryAgentId) });
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(updatedOrder.id) });
+            queryClient.setQueryData(orderKeys.detail(updatedOrder.id), updatedOrder); // Update cache
+            console.log(`Agent assigned to order ${updatedOrder.id}`);
+            // TODO: Success notification
+        },
+        onError: (error, variables) => {
+            console.error(`Error assigning agent to order ${variables.orderId}:`, error.message);
+            // TODO: Error notification
+        },
+    });
+};
+
 // Query Hooks
 export const useGetMyOrders = () => {
     return useQuery<OrderDTO[], ApiError>({
@@ -75,21 +154,27 @@ export const useGetOrderById = (id: number | string | undefined) => {
     });
 };
 
-export const useUpdateOrderStatus = () => {
-     const queryClient = useQueryClient();
-     return useMutation<OrderDTO, ApiError, { id: number | string; request: UpdateOrderStatusRequestDTO }>({
-         mutationFn: updateOrderStatus,
-         onSuccess: (updatedOrder, variables) => {
+export const useGetOrdersAvailableForDelivery = () => {
+    return useQuery<OrderDTO[], ApiError>({
+        queryKey: orderKeys.list('available'),
+        queryFn: fetchOrdersAvailableForDelivery,
+    });
+};
 
-            //  queryClient.invalidateQueries({ queryKey: orderKeys.all });
-             queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
-             queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.id) });
-             console.log('Order status updated successfully', updatedOrder);
-         },
-         onError: (error, variables) => {
-             console.error(`Error updating status for order ${variables.id}:`, error.message);
-         },
-     });
- };
+export const useGetCookOrders = () => {
+    return useQuery<OrderDTO[], ApiError>({
+        queryKey: orderKeys.list('cook'), // Use 'cook' as the type identifier
+        queryFn: fetchCookOrders,
+        // Optional: Add staleTime if needed
+    });
+};
 
-// TODO: to be added hooks for cook, delivery agent, available orders similarly...
+export const useGetMyAssignedOrders = () => {
+    return useQuery<OrderDTO[], ApiError>({
+        queryKey: orderKeys.list('delivery'),
+        queryFn: fetchMyAssignedOrders,
+    });
+};
+
+// TODO: Add hooks for cook, delivery agent orders similarly...
+// export const useGetDeliveryAgentOrders = () => ...

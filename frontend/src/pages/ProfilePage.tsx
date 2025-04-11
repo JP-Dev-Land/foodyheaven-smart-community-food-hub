@@ -5,6 +5,7 @@ import Card from '../components/ui/Card';
 import Spinner from '../components/ui/Spinner';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import { Link } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
   const { data: profile, isLoading, error: fetchError } = useGetUserProfile();
@@ -72,6 +73,12 @@ const ProfilePage: React.FC = () => {
                  </Button>
              </form>
         </Card>
+
+        <div className="mt-6 text-center">
+            <Link to="/order-history" className="text-indigo-600 hover:underline">
+                View Your Order History
+            </Link>
+        </div>
 
         {/* TODO: Placeholder for Change Password Form */}
         <Card>

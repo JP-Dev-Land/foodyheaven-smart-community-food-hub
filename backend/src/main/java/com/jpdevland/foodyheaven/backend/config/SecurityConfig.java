@@ -49,13 +49,17 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/ws/**"
                         ).permitAll()
+                        // --- Add specific rule for route endpoint ---
+                        .requestMatchers("/api/orders/route").authenticated()
+                        // --- Keep existing authenticated rules ---
                         .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers("/api/food-items/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/users/me/**").authenticated()
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() // Secure everything else
                 )
                 .userDetailsService(userDetailsService)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -65,17 +69,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // Allow our React app origin
         config.setAllowedOrigins(List.of("http://localhost:5173"));
-        // Permit standard HTTP methods including OPTIONS
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Allow all headers
         config.setAllowedHeaders(List.of("*"));
-        // Allow cookies/credentials
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply to all endpoints
         source.registerCorsConfiguration("/**", config);
         return source;
     }

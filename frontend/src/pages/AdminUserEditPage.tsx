@@ -18,16 +18,15 @@ const AdminUserEditPage: React.FC = () => {
     if (!id) return;
     updateUser({ id, data: formData }, {
       onSuccess: () => {
-        // TODO: Consider a success notification
-        navigate('/admin/users'); // Going back to list after successful update
+        alert('User updated successfully!');
+        navigate('/admin/users');
       },
-      // onError handled by 'updateError' state
     });
   };
 
   const fetchErrorMessage = (fetchError as ApiError)?.message || 'Could not load user data.';
-  const updateErrorMessage = (updateError as ApiError)?.message || (updateError as any)?.response?.data?.message || 'Failed to update user.';
-  const displayError = updateError ? updateErrorMessage : null;
+  const updateApiErrorMessage = (updateError as ApiError)?.message || (updateError as any)?.response?.data?.message;
+  const displayError = updateApiErrorMessage ? `Update failed: ${updateApiErrorMessage}` : null;
 
   if (isLoadingData) {
     return <div className="min-h-screen flex items-center justify-center"><Spinner size="lg" /></div>;
@@ -45,9 +44,9 @@ const AdminUserEditPage: React.FC = () => {
   }
 
   return (
-     <div className="container mx-auto p-4 max-w-2xl">
+     <div className="container mx-auto px-4 py-8 md:py-12 max-w-2xl">
       <div className="flex justify-between items-center mb-6">
-         <h1 className="text-2xl font-bold">Edit User: {initialData.name}</h1>
+         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Edit User: <span className="font-normal">{initialData.name}</span></h1>
          <Link to="/admin/users">
              <Button variant="secondary" size="sm" disabled={isUpdating}>Cancel</Button>
          </Link>

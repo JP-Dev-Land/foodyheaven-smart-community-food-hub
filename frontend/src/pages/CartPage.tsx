@@ -76,6 +76,11 @@ const CartPage: React.FC = () => {
               Proceed to Checkout
             </Button>
           </Card>
+          <div className="mt-6 text-center">
+            <Link to="/order-history">
+                <Button variant="secondary">View Order History</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -16,4 +16,10 @@ public interface UserService {
     // Self-Service Operations
     UserProfileDTO getCurrentUserProfile(Long userId);
     UserProfileDTO updateCurrentUserProfile(Long userId, UpdateProfileRequestDTO request);
+
+    // For Delivery Agents
+    void updateAvailability(Long userId, boolean available, Long requestingUserId);
+
+    // For getting available delivery agents
+    List<UserProfileDTO> getAvailableDeliveryAgents();
 }

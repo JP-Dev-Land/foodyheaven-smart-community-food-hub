@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -55,7 +54,7 @@ const Header: React.FC = () => {
                              </NavLink>
                          )}
                          {isAuthenticated && !isCook && !isDeliveryAgent && !isAdmin && (
-                            <NavLink to="/my-orders" className={getNavLinkClass}> {/* Placeholder Route */}
+                            <NavLink to="/order-history" className={getNavLinkClass}> {/* Placeholder Route */}
                                 My Orders
                             </NavLink>
                          )}

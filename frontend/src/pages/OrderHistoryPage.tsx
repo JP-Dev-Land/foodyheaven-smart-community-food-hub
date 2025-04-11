@@ -62,7 +62,7 @@ const OrderHistoryPage: React.FC = () => {
                          </ul>
                      </div>
                      <div className="text-right">
-                         <Link to={`/orders/${order.id}`} className="text-sm text-indigo-600 hover:underline">
+                         <Link to={`/order-details/${order.id}`} className="text-sm text-indigo-600 hover:underline">
                             View Details
                          </Link>
                      </div>

@@ -7,4 +7,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  define: {
+    global: 'window',
+  },
+  build: {
+    sourcemap: true,
+  },
 })

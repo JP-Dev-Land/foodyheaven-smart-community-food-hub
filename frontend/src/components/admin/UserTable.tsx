@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserSummary } from '../../types/api';
 import Button from '../ui/Button';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import Spinner from '../ui/Spinner'; // Import Spinner
 
 interface UserTableProps {
   users: UserSummary[];
@@ -53,7 +54,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete, isDeletingId, is
                     disabled={isDeletingId === user.id || isDeleting}
                     className="p-1 text-red-600 hover:text-red-900"
                  >
-                    <TrashIcon className="h-4 w-4" />
+                    {isDeletingId === user.id ? <Spinner size="sm" /> : <TrashIcon className="h-4 w-4" />}
                     <span className="sr-only">Delete</span>
                  </Button>
               </td>

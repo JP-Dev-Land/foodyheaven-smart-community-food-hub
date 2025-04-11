@@ -8,13 +8,11 @@ import com.jpdevland.foodyheaven.backend.model.User;
 import com.jpdevland.foodyheaven.backend.repo.UserRepository;
 import com.jpdevland.foodyheaven.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +53,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(request.getPassword())) // Encode the password!
                 .roles(new HashSet<>(request.getRoles())) // Initialize with requested roles
                 .enabled(request.getEnabled())
+                .available(false) // Default availability for new users
                 .build();
 
         newUser.getRoles().add(Role.ROLE_USER);
@@ -98,14 +97,47 @@ public class UserServiceImpl implements UserService {
         return mapToUserProfileDTO(userRepository.save(user));
     }
 
+    @Override
+    @Transactional
+    public void updateAvailability(Long userId, boolean available, Long requestingUserId) {
+        User user = findUserOrThrow(userId);
+
+        // Authorization: User can only update their own availability, or an Admin can update anyone's.
+        boolean isAdmin = userRepository.findById(requestingUserId)
+            .map(u -> u.getRoles().contains(Role.ROLE_ADMIN))
+            .orElse(false);
+
+        if (!userId.equals(requestingUserId) && !isAdmin) {
+            throw new AccessDeniedException("User not authorized to update availability for user ID: " + userId);
+        }
+
+        // Validation: Ensure user is a delivery agent if setting available to true
+        if (available && !user.getRoles().contains(Role.ROLE_DELIVERY_AGENT)) {
+            throw new InvalidOperationException("User must have ROLE_DELIVERY_AGENT to be marked as available.");
+        }
+
+        if (user.isAvailable() != available) {
+            user.setAvailable(available);
+            userRepository.save(user);
+            System.out.println("User " + userId + " availability set to: " + available); // Debugging
+            // TODO: Optionally broadcast availability change via WebSocket if needed
+            // String destination = "/topic/agents/availability";
+            // messagingTemplate.convertAndSend(destination, Map.of("userId", userId, "available", available));
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserProfileDTO> getAvailableDeliveryAgents() {
+        return userRepository.findByAvailableTrue().stream()
+                .filter(user -> user.getRoles().contains(Role.ROLE_DELIVERY_AGENT))
+                .map(this::mapToUserProfileDTO)
+                .collect(Collectors.toList());
+    }
+
     private User findUserOrThrow(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-    }
-
-    private User findUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
     private UserSummaryDTO mapToUserSummaryDTO(User user) {
@@ -133,7 +165,8 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 user.getName(),
                 user.getUsername(),
-                user.getRoles()
+                user.getRoles(),
+                user.isAvailable()
         );
     }
 }

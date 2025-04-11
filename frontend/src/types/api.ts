@@ -26,6 +26,11 @@ export interface User {
 
 // API error structure (to be adjust based on backend's error responses)
 export interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
   message: string;
   // TODO: Add other potential error fields: timestamp, details, status, etc.
 }
@@ -111,7 +116,19 @@ export interface OrderDTO {
   createdAt: string;
   updatedAt: string;
   items: OrderItemDTO[];
+  pickupLocation?: Coordinates; // Updated type, optional if not always present
+  deliveryLocation?: Coordinates; // Updated type, optional if not always present
 }
+
+// Represents geographic coordinates
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+  street?: string; // Added
+  city?: string; // Added
+  postalCode?: string; // Added
+}
+
 
 export interface CartItemDTO {
   foodItemId: number;
@@ -120,6 +137,8 @@ export interface CartItemDTO {
 
 export interface PlaceOrderRequestDTO {
   items: CartItemDTO[];
+  pickupLocation: Coordinates; // Updated type
+  deliveryLocation: Coordinates; // Updated type
   // Future fields (optional, for future use):
   // deliveryAddress?: string;
   // paymentMethodId?: string;
@@ -147,10 +166,10 @@ export interface UserDetail extends UserSummary {
 // Matches backend CreateUserRequestDTO.java
 export interface CreateUserRequest {
   name: string;
-  username: string;
-  password?: string;
-  roles: string[];
-  enabled?: boolean;
+  username: string; // email
+  password?: string; // Password is required on creation
+  roles: string[]; // Array of role strings (e.g., "ROLE_ADMIN")
+  enabled?: boolean; // Optional, defaults to true on backend
 }
 
 // Matches backend UpdateUserRequestDTO.java
@@ -167,6 +186,7 @@ export interface UserProfile {
   name: string;
   username: string;
   roles: string[];
+  available: boolean;
 }
 
 // Matches backend UpdateProfileRequestDTO.java
@@ -177,3 +197,24 @@ export interface UpdateProfileRequest {
 // Define available roles (sync with backend Role enum)
 export const availableRoles = ["ROLE_USER", "ROLE_COOK", "ROLE_DELIVERY_AGENT", "ROLE_ADMIN"] as const;
 export type AppRole = typeof availableRoles[number]; // Creates a type like "ROLE_USER" | "ROLE_COOK" | ...
+
+// Matches backend AssignAgentRequestDTO.java
+export interface AssignAgentRequestDTO {
+  deliveryAgentId: number;
+}
+
+// Matches backend UpdateAvailabilityRequestDTO.java
+export interface UpdateAvailabilityRequestDTO {
+  available: boolean;
+}
+
+// Matches backend AdminAnalyticsDTO.java
+export interface AdminAnalyticsDTO {
+  totalOrders: number;
+  totalRevenue: number; // Backend sends BigDecimal, frontend receives number or string
+  totalUsers: number;
+  totalCooks: number;
+  totalDeliveryAgents: number;
+  ordersByStatus: Record<string, number>; // Map<String, Long> -> Record<string, number>
+  usersByRole: Record<string, number>;    // Map<String, Long> -> Record<string, number>
+}

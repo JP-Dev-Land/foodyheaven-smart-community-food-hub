@@ -39,4 +39,8 @@ public class User {
     @Builder.Default // Default to enabled
     @Column(nullable = false)
     private boolean enabled = true; // For soft deleting/disabling users
+
+    @Builder.Default // Default availability to false for new users
+    @Column(nullable = false)
+    private boolean available = false; // For delivery agent availability status
 }

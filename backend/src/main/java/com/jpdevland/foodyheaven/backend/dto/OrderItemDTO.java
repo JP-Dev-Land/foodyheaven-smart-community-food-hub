@@ -17,5 +17,5 @@ public class OrderItemDTO {
     private String foodItemName;
     private Integer quantity;
     private BigDecimal priceAtOrderTime;
-    private String foodItemImageUrl; // Added for frontend display
+    private String foodItemImageUrl;
 }
